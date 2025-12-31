@@ -101,7 +101,23 @@ else
     echo "Press Ctrl+C to stop all servers"
     echo ""
     
+    # Function to cleanup processes
+    cleanup() {
+        echo ""
+        echo "Shutting down servers..."
+        if [ ! -z "$BACKEND_PID" ]; then
+            kill $BACKEND_PID 2>/dev/null
+        fi
+        if [ ! -z "$FRONTEND_PID" ]; then
+            kill $FRONTEND_PID 2>/dev/null
+        fi
+        echo "✓ Servers stopped"
+        exit 0
+    }
+    
+    # Register cleanup function for signals
+    trap cleanup SIGINT SIGTERM EXIT
+    
     # Wait for interrupt
-    trap "kill $BACKEND_PID $FRONTEND_PID 2>/dev/null" EXIT
     wait
 fi

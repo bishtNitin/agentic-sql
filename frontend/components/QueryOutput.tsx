@@ -26,13 +26,35 @@ export default function QueryOutput({ result }: QueryOutputProps) {
   const [copiedResults, setCopiedResults] = useState(false);
 
   const copyToClipboard = async (text: string, type: 'sql' | 'results') => {
-    await navigator.clipboard.writeText(text);
-    if (type === 'sql') {
-      setCopiedSql(true);
-      setTimeout(() => setCopiedSql(false), 2000);
-    } else {
-      setCopiedResults(true);
-      setTimeout(() => setCopiedResults(false), 2000);
+    try {
+      await navigator.clipboard.writeText(text);
+      if (type === 'sql') {
+        setCopiedSql(true);
+        setTimeout(() => setCopiedSql(false), 2000);
+      } else {
+        setCopiedResults(true);
+        setTimeout(() => setCopiedResults(false), 2000);
+      }
+    } catch (error) {
+      console.error('Failed to copy to clipboard:', error);
+      // Fallback for browsers that don't support clipboard API
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        if (type === 'sql') {
+          setCopiedSql(true);
+          setTimeout(() => setCopiedSql(false), 2000);
+        } else {
+          setCopiedResults(true);
+          setTimeout(() => setCopiedResults(false), 2000);
+        }
+      } catch (err) {
+        console.error('Fallback copy failed:', err);
+      }
+      document.body.removeChild(textarea);
     }
   };
 
