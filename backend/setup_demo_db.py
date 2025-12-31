@@ -170,7 +170,7 @@ def populate_customers(conn):
     
     for i in range(30):
         name = f"{random.choice(first_names)} {random.choice(last_names)}"
-        email = f"{name.lower().replace(' ', '.')}@email.com"
+        email = f"{name.lower().replace(' ', '.')}.{i}@email.com"  # Add index to ensure uniqueness
         city = random.choice(cities)
         reg_date = base_date + timedelta(days=random.randint(0, 730))
         

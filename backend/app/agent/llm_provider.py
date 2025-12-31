@@ -75,9 +75,13 @@ class HuggingFaceProvider(LLMProvider):
             
             logger.info(f"Model loaded successfully on {device}")
             
+        except ImportError as e:
+            logger.warning(f"Transformers library not installed: {e}")
+            logger.warning("Using mock provider for demo - install transformers for full functionality")
+            self.model = None
+            self.tokenizer = None
         except Exception as e:
             logger.error(f"Failed to initialize Hugging Face model: {e}")
-            # For demo purposes, we'll create a mock provider
             logger.warning("Using mock provider for demo")
             self.model = None
             self.tokenizer = None
@@ -209,6 +213,10 @@ class OpenAIProvider(LLMProvider):
             self.client = OpenAI(api_key=api_key)
             logger.info("OpenAI client initialized")
             
+        except ImportError as e:
+            logger.warning(f"OpenAI library not installed: {e}")
+            logger.warning("Install 'openai' package to use OpenAI provider")
+            self.client = None
         except Exception as e:
             logger.error(f"Failed to initialize OpenAI client: {e}")
             self.client = None
@@ -263,6 +271,10 @@ class AnthropicProvider(LLMProvider):
             self.client = Anthropic(api_key=api_key)
             logger.info("Anthropic client initialized")
             
+        except ImportError as e:
+            logger.warning(f"Anthropic library not installed: {e}")
+            logger.warning("Install 'anthropic' package to use Anthropic provider")
+            self.client = None
         except Exception as e:
             logger.error(f"Failed to initialize Anthropic client: {e}")
             self.client = None
