@@ -1,0 +1,59 @@
+# Backend Configuration File
+# This file controls which LLM provider and model to use for SQL generation
+
+# Provider Configuration
+# Supported providers: huggingface, openai, anthropic
+provider: huggingface
+
+# Hugging Face Models Configuration
+huggingface:
+  # Default model for SQL generation
+  default_model: defog/sqlcoder-7b-2
+  
+  # Alternative models (uncomment to use)
+  # default_model: codellama/CodeLlama-7b-Instruct-hf
+  # default_model: mistralai/Mistral-7B-Instruct-v0.2
+  
+  # Model parameters
+  max_length: 512
+  temperature: 0.1
+  top_p: 0.95
+  device: cpu  # Options: cpu, cuda
+  load_in_8bit: false  # Set to true for memory efficiency
+
+# OpenAI Configuration (Optional)
+openai:
+  model: gpt-4
+  temperature: 0.1
+  max_tokens: 500
+
+# Anthropic Configuration (Optional)
+anthropic:
+  model: claude-3-sonnet-20240229
+  temperature: 0.1
+  max_tokens: 500
+
+# Database Configuration
+database:
+  # SQLite for demo (default)
+  type: sqlite
+  path: ./demo.db
+  
+  # PostgreSQL for production (uncomment to use)
+  # type: postgresql
+  # host: localhost
+  # port: 5432
+  # database: agentic_sql
+  # username: postgres
+  # password: password
+
+# Query Execution Settings
+execution:
+  timeout: 30  # seconds
+  max_rows: 1000  # Maximum rows to return
+  enable_write_queries: false  # Set to true to allow INSERT/UPDATE/DELETE
+
+# Logging
+logging:
+  level: INFO  # DEBUG, INFO, WARNING, ERROR
+  format: json  # json or text
